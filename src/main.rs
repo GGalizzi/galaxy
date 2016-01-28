@@ -7,7 +7,12 @@ use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::rect::Point;
 
+mod game;
 mod galaxy;
+
+use game::Movement;
+use game::Game;
+use game::Zooming;
 fn main() {
     let context = sdl2::init().unwrap();
     let video_subsystem = context.video().unwrap();
@@ -25,8 +30,7 @@ fn main() {
 
     let stars = galaxy::initialize_stars();
 
-    let zoom_factor = 1.0;
-
+    let mut game = Game::new();
 
     'running: loop {
         for event in event_pump.poll_iter() {
@@ -35,24 +39,56 @@ fn main() {
                     break 'running
                 },
                 Event::KeyDown{keycode, repeat, ..} => {
-                    if !repeat { println!("down {:?}", keycode); };
+                    if !repeat && keycode.is_some() { handle_input(true, keycode.unwrap(), &mut game); };
                 },
                 Event::KeyUp{keycode, ..} => {
-                    println!("up {:?}", keycode);
+                    if keycode.is_some() { handle_input(false, keycode.unwrap(), &mut game); }
                 },
                 _ => {}
             }
         }
+
+        game.update();
 
         renderer.set_draw_color(Color::RGB(0,0,0));
         renderer.clear();
         renderer.set_draw_color(Color::RGB(255,255,255));
         for star in &stars {
             renderer.draw_point(Point::new(
-                    (zoom_factor * star.x) as i32 + (window_size.0 / 2) as i32,
-                    (zoom_factor * star.y) as i32 + (window_size.1 / 2) as i32)
+                    (game.camera.zoom_factor * star.x) as i32 + (window_size.0 / 2) as i32 + game.camera.padding.x,
+                    (game.camera.zoom_factor * star.y) as i32 + (window_size.1 / 2) as i32 + game.camera.padding.y)
                 );
         }
         renderer.present();
+    }
+}
+
+fn handle_input(down: bool, keycode: Keycode, game: &mut Game) {
+    match keycode {
+        Keycode::Plus => {
+            game.camera.zooming = if down { Zooming::In }
+            else { Zooming::No }
+        },
+        Keycode::Minus => {
+            game.camera.zooming = if down { Zooming::Out }
+            else { Zooming::No }
+        },
+        Keycode::Left => {
+            game.camera.panning.insert(Movement::Left, if down { true }
+            else { false });
+        },
+        Keycode::Right => {
+            game.camera.panning.insert(Movement::Right, if down { true }
+            else { false });
+        },
+        Keycode::Up => {
+            game.camera.panning.insert(Movement::Up,  if down { true }
+            else { false });
+        },
+        Keycode::Down => {
+            game.camera.panning.insert(Movement::Down, if down { true }
+            else { false });
+        },
+        _ => {}
     }
 }
