@@ -64,8 +64,14 @@ fn main() {
                 );
         }
 
+        renderer.set_draw_color(Color::RGB(50,180,66));
         renderer.fill_rect(Rect::new_unwrap( (window_size.0 / 2) as i32 + game.camera.padding.x as i32,
                                              (window_size.1 / 2) as i32 + game.camera.padding.y as i32, 10,10));
+
+        renderer.set_draw_color(Color::RGB(150,120,66));
+        renderer.fill_rect(Rect::new_unwrap((window_size.0 / 2) as i32,
+                                           (window_size.1 / 2) as i32, 10,10));
+
         renderer.present();
     }
 }
