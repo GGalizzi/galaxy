@@ -4,10 +4,10 @@ use rand::{Rng, StdRng, SeedableRng};
 use ::nalgebra::Pnt2;
 
 const ARMS_COUNT: i32 = 3;
-const ARMS_DISTANCE: f64 = 2.0 * PI / ARMS_COUNT as f64;
-const ARM_MAX_OFFSET: f64 = 0.65;
-const ROTATION_FACTOR: f64 = 6.4;
-const RANDOM_OFFSET: f64 = 0.04;
+const ARMS_DISTANCE: f64 = 1.9 * PI / ARMS_COUNT as f64;
+const ARM_MAX_OFFSET: f64 = 0.95;
+const ROTATION_FACTOR: f64 = 5.4;
+const RANDOM_OFFSET: f64 = 0.10;
 
 const RADIUS: f64 = 300.0;
 pub fn initialize_stars() -> Vec<Pnt2<f64>> {
@@ -15,9 +15,9 @@ pub fn initialize_stars() -> Vec<Pnt2<f64>> {
 
     let seed: &[_] = &[666,999];
     let mut rng: StdRng = SeedableRng::from_seed(seed);
-    for _ in 0..10000 {
+    for _ in 0..38000 {
         let mut distance: f64 = rng.gen_range(0.0,1.0);
-        distance = distance.powf(2.0);
+        distance = distance.powf(1.25);
 
         let mut angle = rng.gen_range(0.0,1.0) * 2.0 * PI;
         let mut arm_offset = rng.gen_range(0.0,1.0) * ARM_MAX_OFFSET;
