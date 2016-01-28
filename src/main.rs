@@ -6,6 +6,7 @@ use sdl2::pixels::Color;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::rect::Point;
+use sdl2::rect::Rect;
 
 mod game;
 mod galaxy;
@@ -62,6 +63,9 @@ fn main() {
                     (window_size.1 / 2) as i32 + game.camera.padding.y as i32)
                 );
         }
+
+        renderer.fill_rect(Rect::new_unwrap( (window_size.0 / 2) as i32 + game.camera.padding.x as i32,
+                                             (window_size.1 / 2) as i32 + game.camera.padding.y as i32, 10,10));
         renderer.present();
     }
 }
@@ -91,6 +95,9 @@ fn handle_input(down: bool, keycode: Keycode, game: &mut Game) {
         Keycode::Down => {
             game.camera.panning.insert(Movement::Down, if down { true }
             else { false });
+        },
+        Keycode::LShift | Keycode::RShift => {
+            game.camera.shift = down
         },
         _ => {}
     }

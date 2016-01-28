@@ -48,7 +48,9 @@ impl Game {
     }
 
     fn padding_formula(&self) -> f64 {
-       10.0 / self.camera.zoom_factor
+        let mut a = 2.5;
+        if self.camera.shift { a += 2.5; }
+        a / self.camera.zoom_factor
     }
 }
 
@@ -61,6 +63,7 @@ pub struct Camera {
     pub zoom_factor: f64,
     pub padding: Pnt2<f64>,
     pub panning: HashMap<Movement, bool>,
+    pub shift: bool,
     pub zooming: Zooming,
 }
 
@@ -75,6 +78,7 @@ impl Camera {
             zoom_factor: 1.0,
             padding: Pnt2::new(0.0,0.0),
             panning: panning,
+            shift: false,
             zooming: Zooming::No,
         }
     }
