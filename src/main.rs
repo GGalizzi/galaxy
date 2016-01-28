@@ -55,8 +55,11 @@ fn main() {
         renderer.set_draw_color(Color::RGB(255,255,255));
         for star in &stars {
             renderer.draw_point(Point::new(
-                    (game.camera.zoom_factor * star.x) as i32 + (window_size.0 / 2) as i32 + game.camera.padding.x,
-                    (game.camera.zoom_factor * star.y) as i32 + (window_size.1 / 2) as i32 + game.camera.padding.y)
+                    (game.camera.zoom_factor * (star.x + game.camera.padding.x)) as i32 +
+                    (window_size.0 / 2) as i32 + game.camera.padding.x as i32,
+
+                    (game.camera.zoom_factor * (star.y + game.camera.padding.y)) as i32 +
+                    (window_size.1 / 2) as i32 + game.camera.padding.y as i32)
                 );
         }
         renderer.present();
