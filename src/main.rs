@@ -53,20 +53,48 @@ fn main() {
     }
 }
 
+const arms_count: i32 = 3;
+const arms_distance: f64 = 2.0 * PI / arms_count as f64;
+const arm_max_offset: f64 = 0.65;
+const rotation_factor: f64 = 6.4;
+const random_offset: f64 = 0.04;
+
+const radius: f64 = 300.0;
 fn initialize_stars() -> Vec<Pnt2<f64>> {
     let mut stars = Vec::new();
 
     let seed: &[_] = &[666,999];
     let mut rng: StdRng = SeedableRng::from_seed(seed);
-    for i in 0..10000 {
-        let distance = rng.gen_range(0.0,300.0);
+    for _ in 0..10000 {
+        let mut distance: f64 = rng.gen_range(0.0,1.0);
+        distance = distance.powf(2.0);
 
-        let angle = rng.gen_range(0.0,1.0) * 2.0 * PI;
+        let mut angle = rng.gen_range(0.0,1.0) * 2.0 * PI;
+        let mut arm_offset = rng.gen_range(0.0,1.0) * arm_max_offset;
+        arm_offset = arm_offset - arm_max_offset / 2.0;
+        arm_offset = arm_offset * ( 1.0 / distance);
+
+        let mut squared_offset = arm_offset.powf(2.0);
+        if arm_offset < 0.0 {
+            squared_offset = squared_offset * -1.0;
+        }
+        arm_offset = squared_offset;
+
+        let rotation = distance * rotation_factor;
+        angle = ((angle / arms_distance) as i32) as f64 * arms_distance + arm_offset + rotation;
+
 
         // To cartesian
+
+
+        let mut star_x = (angle.cos() * distance);
+        let mut star_y = (angle.sin() * distance);
+
+        star_x += rng.gen_range(0.0,1.0) * random_offset;
+        star_y += rng.gen_range(0.0,1.0) * random_offset;
         stars.push(Pnt2::new(
-            angle.cos() * distance,
-            angle.sin() * distance
+                star_x * radius,
+                star_y * radius
         ));
 
     }
