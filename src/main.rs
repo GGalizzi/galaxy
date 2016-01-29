@@ -60,6 +60,8 @@ fn main() {
         renderer.set_draw_color(Color::RGB(0,0,0));
         renderer.clear();
         let zoom_point = game.camera.padding;
+        let hovered = false;
+        let mut hovered = false;
         for star in &stars {
             renderer.set_draw_color(star.color);
             let star = star.position;
@@ -71,8 +73,9 @@ fn main() {
                     (window_size.1 / 2) as i32 );
 
             let mstate = context.mouse().mouse_state();
-            if mstate.1 >= draw_point.x() - 10 && mstate.1 <= draw_point.x() + 10
+            if !hovered && mstate.1 >= draw_point.x() - 10 && mstate.1 <= draw_point.x() + 10
             && mstate.2 >= draw_point.y() - 10 && mstate.2 <= draw_point.y() +10 {
+                hovered = true;
                 renderer.draw_rect(Rect::new_unwrap(draw_point.x() - 10, draw_point.y() - 10, 20,20));
             }
             renderer.draw_point(draw_point);
