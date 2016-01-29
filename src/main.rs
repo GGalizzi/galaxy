@@ -36,8 +36,6 @@ fn main() {
     let ttf = sdl2_ttf::init().unwrap();
     let font = ttf.load_font(std::path::Path::new("fonts/lato.ttf"), 16).unwrap();
 
-    let asd = font.render("asd").blended(Color::RGB(255,0,0)).unwrap();
-
     let window = video_subsystem.window("space", 1280,1024)
         .position_centered()
         .opengl()
@@ -53,7 +51,6 @@ fn main() {
 
     let mut game = Game::new();
 
-    let tex = renderer.create_texture_from_surface(asd).unwrap();
     'running: loop {
         for event in event_pump.poll_iter() {
             match event {
@@ -96,7 +93,11 @@ fn main() {
             }
             renderer.draw_point(draw_point);
         }
-        write!("asd", font, renderer);
+
+        if let Some(star) = game.hovered {
+            write!(format!("X: {}, Y: {}", star.position.x, star.position.y).as_str(),
+                   font, renderer);
+        }
         renderer.present();
     }
 }
