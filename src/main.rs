@@ -1,4 +1,5 @@
 extern crate sdl2;
+extern crate sdl2_ttf;
 extern crate rand;
 extern crate nalgebra;
 
@@ -18,9 +19,24 @@ use galaxy::Star;
 use game::Movement;
 use game::Game;
 use game::Zooming;
+
+macro_rules! write {
+    ($text:expr, $font:expr, $renderer:expr) => {
+        {
+        let t = $font.render($text).blended(Color::RGB(250,100,100)).unwrap();
+        let tex = $renderer.create_texture_from_surface(t).unwrap();
+        $renderer.copy(&tex, None, Some(Rect::new_unwrap(10,10,tex.query().width,tex.query().height)));
+        }
+    };
+}
+
 fn main() {
     let context = sdl2::init().unwrap();
     let video_subsystem = context.video().unwrap();
+    let ttf = sdl2_ttf::init().unwrap();
+    let font = ttf.load_font(std::path::Path::new("fonts/lato.ttf"), 16).unwrap();
+
+    let asd = font.render("asd").blended(Color::RGB(255,0,0)).unwrap();
 
     let window = video_subsystem.window("space", 1280,1024)
         .position_centered()
@@ -37,6 +53,7 @@ fn main() {
 
     let mut game = Game::new();
 
+    let tex = renderer.create_texture_from_surface(asd).unwrap();
     'running: loop {
         for event in event_pump.poll_iter() {
             match event {
@@ -79,6 +96,7 @@ fn main() {
             }
             renderer.draw_point(draw_point);
         }
+        write!("asd", font, renderer);
         renderer.present();
     }
 }

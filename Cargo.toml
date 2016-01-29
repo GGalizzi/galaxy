@@ -6,6 +6,11 @@ authors = ["Guillermo Galizzi <galizzi.guillermo@gmail.com>"]
 [dependencies]
 rand = "0.3"
 nalgebra = "0.5.1"
+sdl2 = "0.13.0"
+sdl2_ttf = "0.14.0"
 
-[dependencies.sdl2]
-git = "https://github.com/AngryLawyer/rust-sdl2"
+#[dependencies.sdl2]
+#git = "https://github.com/AngryLawyer/rust-sdl2"
+#
+#[dependencies.sdl2_ttf]
+#git = "https://github.com/andelf/rust-sdl2_ttf"
