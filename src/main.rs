@@ -2,6 +2,8 @@ extern crate sdl2;
 extern crate rand;
 extern crate nalgebra;
 
+use nalgebra::Pnt2;
+
 use sdl2::pixels::Color;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
@@ -54,24 +56,16 @@ fn main() {
         renderer.set_draw_color(Color::RGB(0,0,0));
         renderer.clear();
         renderer.set_draw_color(Color::RGB(255,255,255));
+        let zoom_point = game.camera.padding;
         for star in &stars {
             renderer.draw_point(Point::new(
-                    (game.camera.zoom_factor * (star.x + game.camera.padding.x)) as i32 +
-                    (window_size.0 / 2) as i32 + game.camera.padding.x as i32,
+                    (game.camera.zoom_factor * (star.x + zoom_point.x)) as i32 +
+                    (window_size.0 / 2) as i32 ,
 
-                    (game.camera.zoom_factor * (star.y + game.camera.padding.y)) as i32 +
-                    (window_size.1 / 2) as i32 + game.camera.padding.y as i32)
+                    (game.camera.zoom_factor * (star.y + zoom_point.y)) as i32 +
+                    (window_size.1 / 2) as i32 )
                 );
         }
-
-        renderer.set_draw_color(Color::RGB(50,180,66));
-        renderer.fill_rect(Rect::new_unwrap( (window_size.0 / 2) as i32 + game.camera.padding.x as i32,
-                                             (window_size.1 / 2) as i32 + game.camera.padding.y as i32, 10,10));
-
-        renderer.set_draw_color(Color::RGB(150,120,66));
-        renderer.fill_rect(Rect::new_unwrap((window_size.0 / 2) as i32,
-                                           (window_size.1 / 2) as i32, 10,10));
-
         renderer.present();
     }
 }
@@ -102,6 +96,7 @@ fn handle_input(down: bool, keycode: Keycode, game: &mut Game) {
             game.camera.panning.insert(Movement::Down, if down { true }
             else { false });
         },
+
         Keycode::LShift | Keycode::RShift => {
             game.camera.shift = down
         },
