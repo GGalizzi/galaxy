@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 use ::nalgebra::Pnt2;
 
+use ::galaxy::Star;
+
 #[derive(PartialEq,Eq,Hash)]
 pub enum Movement {
     Up,
@@ -9,14 +11,17 @@ pub enum Movement {
     Right
 }
 
-pub struct Game {
-    pub camera: Camera
+pub struct Game<'a> {
+    pub camera: Camera,
+
+    pub hovered: Option<&'a Star>,
 }
 
-impl Game {
-    pub fn new() -> Game {
+impl<'a> Game<'a> {
+    pub fn new() -> Game<'a> {
         Game {
             camera: Camera::new(),
+            hovered: None,
         }
     }
 
