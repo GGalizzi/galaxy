@@ -15,6 +15,7 @@ pub struct Game<'a> {
     pub camera: Camera,
 
     pub hovered: Option<&'a Star>,
+    pub selected: Option<&'a Star>,
 }
 
 impl<'a> Game<'a> {
@@ -22,6 +23,16 @@ impl<'a> Game<'a> {
         Game {
             camera: Camera::new(),
             hovered: None,
+            selected: None,
+        }
+    }
+
+    // Triggers on a left-click on galaxy map
+    pub fn maybe_select(&mut self) {
+        if let Some(star) = self.hovered {
+            self.selected = Some(star);
+        } else if self.selected.is_some() {
+            self.selected = None;
         }
     }
 

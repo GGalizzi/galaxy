@@ -7,9 +7,12 @@ use nalgebra::Pnt2;
 
 use sdl2::pixels::Color;
 use sdl2::event::Event;
+use sdl2::mouse::Mouse;
 use sdl2::keyboard::Keycode;
 use sdl2::rect::Point;
 use sdl2::rect::Rect;
+use sdl2::render::Renderer;
+use sdl2_ttf::Font;
 
 mod game;
 mod galaxy;
@@ -63,7 +66,10 @@ fn main() {
                 Event::KeyUp{keycode, ..} => {
                     if keycode.is_some() { handle_input(false, keycode.unwrap(), &mut game); }
                 },
-                Event::MouseMotion{x,y,..} => {
+                Event::MouseButtonDown{mouse_btn,..} => {
+                    if mouse_btn == Mouse::Left {
+                        game.maybe_select();
+                    };
                 },
                 _ => {}
             }
@@ -91,14 +97,29 @@ fn main() {
                 game.hovered = Some(&star);
                 renderer.draw_rect(Rect::new_unwrap(draw_point.x() - 10, draw_point.y() - 10, 20,20));
             }
+
+            if let Some(star) = game.selected {
+                if star.position == star_pnt {
+                    renderer.fill_rect(Rect::new_unwrap(draw_point.x() - 10, draw_point.y() - 10, 20,20));
+                }
+            };
             renderer.draw_point(draw_point);
         }
 
-        if let Some(star) = game.hovered {
-            write!(format!("X: {}, Y: {}", star.position.x, star.position.y).as_str(),
-                   font, renderer);
-        }
+
+        if game.hovered.is_some() {
+            maybe_render_star_data(game.hovered, &font, &mut renderer);
+        } else {
+            maybe_render_star_data(game.selected, &font, &mut renderer);
+        };
         renderer.present();
+    }
+}
+
+fn maybe_render_star_data(star: Option<&Star>, font: &Font, renderer: &mut Renderer) {
+    if let Some(star) = star {
+        write!(format!("X: {}, Y: {}", star.position.x, star.position.y).as_str(),
+        font, renderer);
     }
 }
 
