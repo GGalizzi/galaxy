@@ -47,6 +47,7 @@ fn main() {
 
     let window_size = window.size();
     let mut renderer = window.renderer().build().unwrap();
+    renderer.set_blend_mode(sdl2::render::BlendMode::Add);
 
     let mut event_pump = context.event_pump().unwrap();
 
@@ -100,6 +101,8 @@ fn main() {
 
             if let Some(star) = game.selected {
                 if star.position == star_pnt {
+                    let c = star.color.rgb();
+                    renderer.set_draw_color(Color::RGBA(c.0,c.1,c.2, 100));
                     renderer.fill_rect(Rect::new_unwrap(draw_point.x() - 10, draw_point.y() - 10, 20,20));
                 }
             };
