@@ -48,8 +48,8 @@ impl Game {
     }
 
     fn padding_formula(&self) -> f64 {
-        let mut a = 2.5;
-        if self.camera.shift { a += 2.5; }
+        let mut a = 4.0;
+        if self.camera.shift { a += 4.5; }
         a / self.camera.zoom_factor
     }
 }
