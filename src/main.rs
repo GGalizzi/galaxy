@@ -49,6 +49,8 @@ fn main() {
                 Event::KeyUp{keycode, ..} => {
                     if keycode.is_some() { handle_input(false, keycode.unwrap(), &mut game); }
                 },
+                Event::MouseMotion{x,y,..} => {
+                },
                 _ => {}
             }
         }
@@ -61,13 +63,19 @@ fn main() {
         for star in &stars {
             renderer.set_draw_color(star.color);
             let star = star.position;
-            renderer.draw_point(Point::new(
+            let draw_point = Point::new(
                     (game.camera.zoom_factor * (star.x + zoom_point.x)) as i32 +
                     (window_size.0 / 2) as i32 ,
 
                     (game.camera.zoom_factor * (star.y + zoom_point.y)) as i32 +
-                    (window_size.1 / 2) as i32 )
-                );
+                    (window_size.1 / 2) as i32 );
+
+            let mstate = context.mouse().mouse_state();
+            if mstate.1 >= draw_point.x() - 10 && mstate.1 <= draw_point.x() + 10
+            && mstate.2 >= draw_point.y() - 10 && mstate.2 <= draw_point.y() +10 {
+                renderer.draw_rect(Rect::new_unwrap(draw_point.x() - 10, draw_point.y() - 10, 20,20));
+            }
+            renderer.draw_point(draw_point);
         }
         renderer.present();
     }
