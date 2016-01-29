@@ -3,6 +3,22 @@ use std::f64::consts::PI;
 use rand::{Rng, StdRng, SeedableRng};
 use ::nalgebra::Pnt2;
 
+use ::sdl2::pixels::Color;
+
+pub struct Star {
+    pub position: Pnt2<f64>,
+    pub color: Color,
+}
+
+impl Star {
+    pub fn new(position: Pnt2<f64>, color: Color) -> Star {
+        Star {
+            position: position,
+            color: color,
+        }
+    }
+}
+
 const ARMS_COUNT: i32 = 3;
 const ARMS_DISTANCE: f64 = 1.9 * PI / ARMS_COUNT as f64;
 const ARM_MAX_OFFSET: f64 = 0.95;
@@ -10,7 +26,7 @@ const ROTATION_FACTOR: f64 = 5.4;
 const RANDOM_OFFSET: f64 = 0.10;
 
 const RADIUS: f64 = 300.0;
-pub fn initialize_stars() -> Vec<Pnt2<f64>> {
+pub fn initialize_stars() -> Vec<Star> {
     let mut stars = Vec::new();
 
     let seed: &[_] = &[666,999];
@@ -42,10 +58,11 @@ pub fn initialize_stars() -> Vec<Pnt2<f64>> {
 
         star_x += rng.gen_range(0.0,1.0) * RANDOM_OFFSET;
         star_y += rng.gen_range(0.0,1.0) * RANDOM_OFFSET;
-        stars.push(Pnt2::new(
+        let star = Star::new(Pnt2::new(
                 star_x * RADIUS,
                 star_y * RADIUS
-        ));
+        ), Color::RGB(rng.gen_range(130,230),rng.gen_range(130,230),rng.gen_range(130,230)));
+        stars.push(star);
 
     }
     stars

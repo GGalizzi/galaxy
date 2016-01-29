@@ -13,6 +13,8 @@ use sdl2::rect::Rect;
 mod game;
 mod galaxy;
 
+use galaxy::Star;
+
 use game::Movement;
 use game::Game;
 use game::Zooming;
@@ -55,9 +57,10 @@ fn main() {
 
         renderer.set_draw_color(Color::RGB(0,0,0));
         renderer.clear();
-        renderer.set_draw_color(Color::RGB(255,255,255));
         let zoom_point = game.camera.padding;
         for star in &stars {
+            renderer.set_draw_color(star.color);
+            let star = star.position;
             renderer.draw_point(Point::new(
                     (game.camera.zoom_factor * (star.x + zoom_point.x)) as i32 +
                     (window_size.0 / 2) as i32 ,
