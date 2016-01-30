@@ -121,7 +121,7 @@ fn main() {
 
 fn maybe_render_star_data(star: Option<&Star>, font: &Font, renderer: &mut Renderer) {
     if let Some(star) = star {
-        write!(format!("X: {}, Y: {}", star.position.x, star.position.y).as_str(),
+        write!(format!("{}\nX: {}, Y: {}", star.name,star.position.x, star.position.y).as_str(),
         font, renderer);
     }
 }
@@ -137,22 +137,22 @@ fn handle_input(down: bool, keycode: Keycode, game: &mut Game) {
             else { Zooming::No }
         },
         Keycode::Left => {
-            game.camera.panning.insert(Movement::Left, if down { true }
-            else { false });
+            game.camera.panning.insert(Movement::Left, down);
         },
         Keycode::Right => {
-            game.camera.panning.insert(Movement::Right, if down { true }
-            else { false });
+            game.camera.panning.insert(Movement::Right, down);
         },
         Keycode::Up => {
-            game.camera.panning.insert(Movement::Up,  if down { true }
-            else { false });
+            game.camera.panning.insert(Movement::Up, down);
         },
         Keycode::Down => {
-            game.camera.panning.insert(Movement::Down, if down { true }
-            else { false });
+            game.camera.panning.insert(Movement::Down, down);
         },
-
+        Keycode::M => {
+            if !down {
+                game.target_nearby_star();
+            }
+        },
         Keycode::LShift | Keycode::RShift => {
             game.camera.shift = down
         },

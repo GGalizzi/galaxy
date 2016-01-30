@@ -36,6 +36,10 @@ impl<'a> Game<'a> {
         }
     }
 
+    pub fn target_nearby_star(&mut self) {
+
+    },
+
     pub fn update(&mut self) {
         match self.camera.zooming {
             Zooming::In => {
