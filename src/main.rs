@@ -84,7 +84,10 @@ fn main() {
         game.hovered = None;
 
         let zf = game.camera.zoom_factor.clone() as usize;
+        let selected_id = if game.selected.is_some() { game.selected.unwrap().id }
+                          else { -1 };
         let iter = stars.iter().flat_map(|sv| sv).filter(|star|  {
+            if selected_id == star.id { return true; }
                                                          let diff = (star.z as i32 - zf as i32).abs();
                                                          if zf <= 2 { diff <= 1 }
                                                          else if zf <= 5 { diff <= 2 }

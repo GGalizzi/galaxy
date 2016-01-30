@@ -6,6 +6,7 @@ use ::nalgebra::Pnt2;
 use ::sdl2::pixels::Color;
 
 pub struct Star {
+    pub id: i32,
     pub position: Pnt2<f64>,
     pub z: usize,
     pub color: Color,
@@ -15,8 +16,9 @@ pub struct Star {
 
 const SYLLABLES: [&'static str; 13] = ["um", "za", "dor", "lim", "fal", "saf", "ele", "ziu", "jin", "rou", "wer", "ni", "le"];
 impl Star {
-    pub fn new(position: Pnt2<f64>, z: usize, sector: Pnt2<i32>, color: Color) -> Star {
+    pub fn new(id: i32,position: Pnt2<f64>, z: usize, sector: Pnt2<i32>, color: Color) -> Star {
         Star {
+            id: id,
             position: position,
             z: z,
             sector: sector,
@@ -51,6 +53,7 @@ const RADIUS: f64 = 300.0;
 pub fn initialize_stars() -> Vec<Vec<Star>> {
     let mut all_stars = Vec::new();
 
+    let mut id = 0;
     for i in 0..80 {
         let mut stars = Vec::new();
 
@@ -85,10 +88,11 @@ pub fn initialize_stars() -> Vec<Vec<Star>> {
             let cart_pos = Pnt2::new(star_x * RADIUS,
                                      star_y * RADIUS);
 
-            let mut star = Star::new( cart_pos, i,
+            let mut star = Star::new( id,cart_pos, i,
                                       Pnt2::new((cart_pos.x / 10.0) as i32,
                                       (cart_pos.y / 10.0) as i32),
                                       Color::RGB(rng.gen_range(130,230),rng.gen_range(130,230),rng.gen_range(130,230)));
+            id += 1;
             //star.gen_name();
 
 
