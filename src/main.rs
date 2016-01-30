@@ -92,6 +92,11 @@ fn main() {
                     (game.camera.zoom_factor * (star_pnt.y + zoom_point.y)) as i32 +
                     (window_size.1 / 2) as i32 );
 
+
+            if draw_point.x() < 0 || draw_point.y() < 0
+                || draw_point.x() > window_size.0 as i32 || draw_point.y() > window_size.1 as i32 {
+                    continue;
+                }
             let mstate = context.mouse().mouse_state();
             if game.hovered.is_none() && mstate.1 >= draw_point.x() - 10 && mstate.1 <= draw_point.x() + 10
             && mstate.2 >= draw_point.y() - 10 && mstate.2 <= draw_point.y() +10 {
