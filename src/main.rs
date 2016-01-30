@@ -120,6 +120,7 @@ fn main() {
         } else {
             maybe_render_star_data(game.selected, &font, &mut renderer);
         };
+        write!(format!("{}", game.camera.zoom_factor).as_str(), 80, &font, &mut renderer);
         renderer.present();
     }
 }
