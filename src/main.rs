@@ -24,11 +24,11 @@ use game::Game;
 use game::Zooming;
 
 macro_rules! write {
-    ($text:expr, $font:expr, $renderer:expr) => {
+    ($text:expr, $y:expr, $font:expr, $renderer:expr) => {
         {
         let t = $font.render($text).blended(Color::RGB(250,100,100)).unwrap();
         let tex = $renderer.create_texture_from_surface(t).unwrap();
-        $renderer.copy(&tex, None, Some(Rect::new_unwrap(10,10,tex.query().width,tex.query().height)));
+        $renderer.copy(&tex, None, Some(Rect::new_unwrap(10,$y,tex.query().width,tex.query().height)));
         }
     };
 }
@@ -126,8 +126,10 @@ fn main() {
 
 fn maybe_render_star_data(star: Option<&Star>, font: &Font, renderer: &mut Renderer) {
     if let Some(star) = star {
-        write!(format!("{} | Sector: {:?} | X: {}, Y: {}", star.name, star.sector, star.position.x, star.position.y).as_str(),
-        font, renderer);
+        write!(format!("{}", star.name).as_str(), 10, font, renderer);
+        write!(format!("{:?}", star.sector).as_str(), 28, font, renderer);
+        write!(format!("X: {}, Y: {}", star.position.x, star.position.y).as_str(),
+        49,font, renderer);
     }
 }
 

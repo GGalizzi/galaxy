@@ -76,10 +76,8 @@ pub fn initialize_stars() -> Vec<Star> {
         star_x += rng.gen_range(0.0,1.0) * RANDOM_OFFSET;
         star_y += rng.gen_range(0.0,1.0) * RANDOM_OFFSET;
 
-        let cart_pos = Pnt2::new(
-                star_x * RADIUS,
-                star_y * RADIUS
-                );
+        let cart_pos = Pnt2::new(star_x * RADIUS,
+                                 star_y * RADIUS);
 
         let mut star = Star::new( cart_pos,
                                   Pnt2::new((cart_pos.x / 10.0) as i32,
