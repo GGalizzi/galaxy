@@ -82,7 +82,20 @@ fn main() {
         renderer.clear();
         let zoom_point = game.camera.padding;
         game.hovered = None;
-        for star in &stars {
+
+        let zf = game.camera.zoom_factor.clone() as usize;
+        let iter = stars.iter().flat_map(|sv| sv).filter(|star|  {
+                                                         let diff = (star.z as i32 - zf as i32).abs();
+                                                         if zf <= 2 { diff <= 1 }
+                                                         else if zf <= 5 { diff <= 2 }
+                                                         else if zf <= 8 { diff <= 4 }
+                                                         else if zf <= 12 { diff <= 8 }
+                                                         else if zf <= 22 { diff <= 13 }
+                                                         else { diff <= 1500 }
+        }
+        );
+
+        for star in iter {
             renderer.set_draw_color(star.color);
             let star_pnt = star.position;
             let draw_point = Point::new(
