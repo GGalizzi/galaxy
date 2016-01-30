@@ -142,7 +142,7 @@ fn maybe_render_star_data(star: Option<&Star>, font: &Font, renderer: &mut Rende
     if let Some(star) = star {
         write!(format!("{}", star.name).as_str(), 10, font, renderer);
         write!(format!("{:?}", star.sector).as_str(), 28, font, renderer);
-        write!(format!("X: {}, Y: {}", star.position.x, star.position.y).as_str(),
+        write!(format!("X: {}, Y: {}, Z: {}", star.position.x, star.position.y, star.z).as_str(),
         49,font, renderer);
     }
 }
