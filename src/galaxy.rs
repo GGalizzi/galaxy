@@ -59,6 +59,7 @@ pub fn initialize_stars() -> Vec<Vec<Star>> {
         for _ in 0..5000 {
             let mut distance: f64 = rng.gen_range(0.0,1.0);
             distance = distance.powf(1.25);
+            if distance <= 0.08 && rng.gen_range(0,100) < 90 { continue; }
 
             let mut angle = rng.gen_range(0.0,1.0) * 2.0 * PI;
             let mut arm_offset = rng.gen_range(0.0,1.0) * ARM_MAX_OFFSET;
