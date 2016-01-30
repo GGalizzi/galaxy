@@ -9,13 +9,15 @@ pub struct Star {
     pub position: Pnt2<f64>,
     pub color: Color,
     pub name: String,
+    pub sector: Pnt2<i32>
 }
 
 const SYLLABLES: [&'static str; 13] = ["um", "za", "dor", "lim", "fal", "saf", "ele", "ziu", "jin", "rou", "wer", "ni", "le"];
 impl Star {
-    pub fn new(position: Pnt2<f64>, color: Color) -> Star {
+    pub fn new(position: Pnt2<f64>, sector: Pnt2<i32>, color: Color) -> Star {
         Star {
             position: position,
+            sector: sector,
             color: color,
             name: "UNNAMED THIS IS A BUG".to_string(), //XXX
         }
@@ -74,11 +76,17 @@ pub fn initialize_stars() -> Vec<Star> {
         star_x += rng.gen_range(0.0,1.0) * RANDOM_OFFSET;
         star_y += rng.gen_range(0.0,1.0) * RANDOM_OFFSET;
 
-        let mut star = Star::new(Pnt2::new(
+        let cart_pos = Pnt2::new(
                 star_x * RADIUS,
                 star_y * RADIUS
-        ), Color::RGB(rng.gen_range(130,230),rng.gen_range(130,230),rng.gen_range(130,230)));
-        star.gen_name();
+                );
+
+        let mut star = Star::new( cart_pos,
+                                  Pnt2::new((cart_pos.x / 10.0) as i32,
+                                  (cart_pos.y / 10.0) as i32),
+                                  Color::RGB(rng.gen_range(130,230),rng.gen_range(130,230),rng.gen_range(130,230)));
+        //star.gen_name();
+        
 
         stars.push(star);
 
